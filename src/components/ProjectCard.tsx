@@ -19,12 +19,14 @@ interface ProjectCardProps {
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {
   const navigate = useNavigate();
-  const { setCurrentProjectId, getProjectDocuments, getProjectMilestones, getProjectTodos } =
-    useProjectStore();
+  const setCurrentProjectId = useProjectStore((s) => s.setCurrentProjectId);
+  const allDocuments = useProjectStore((s) => s.documents);
+  const allMilestones = useProjectStore((s) => s.milestones);
+  const allTodos = useProjectStore((s) => s.todos);
 
-  const documents = getProjectDocuments(project.id);
-  const milestones = getProjectMilestones(project.id);
-  const todos = getProjectTodos(project.id);
+  const documents = allDocuments.filter((d) => d.projectId === project.id);
+  const milestones = allMilestones.filter((m) => m.projectId === project.id);
+  const todos = allTodos.filter((t) => t.projectId === project.id);
 
   const docProgress =
     documents.length > 0

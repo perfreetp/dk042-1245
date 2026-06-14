@@ -150,8 +150,10 @@ const MilestoneForm = ({ formData, onChange, onCancel, onSubmit, isEditing }: Mi
 
 export const Milestones = () => {
   const { id } = useParams();
-  const { getProjectMilestones, addMilestone, updateMilestone } = useProjectStore();
-  const milestones = id ? getProjectMilestones(id) : [];
+  const allMilestones = useProjectStore((s) => s.milestones);
+  const addMilestone = useProjectStore((s) => s.addMilestone);
+  const updateMilestone = useProjectStore((s) => s.updateMilestone);
+  const milestones = id ? allMilestones.filter((m) => m.projectId === id) : [];
 
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);

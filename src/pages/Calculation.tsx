@@ -16,8 +16,9 @@ import { ProgressRing } from "@/components/ProgressRing";
 
 export const Calculation = () => {
   const { id } = useParams();
-  const { getProjectCalculations, addCalculation } = useProjectStore();
-  const calculations = id ? getProjectCalculations(id) : [];
+  const allCalculations = useProjectStore((s) => s.calculations);
+  const addCalculation = useProjectStore((s) => s.addCalculation);
+  const calculations = id ? allCalculations.filter((c) => c.projectId === id) : [];
 
   const [formData, setFormData] = useState({
     baselineYear: "2024",

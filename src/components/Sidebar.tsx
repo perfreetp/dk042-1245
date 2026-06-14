@@ -19,7 +19,9 @@ interface SidebarProps {
 
 export const Sidebar = ({ compact = false }: SidebarProps) => {
   const { id } = useParams();
-  const currentProject = useProjectStore((s) => s.getCurrentProject());
+  const currentProject = useProjectStore(
+    (s) => id ? s.projects.find((p) => p.id === id) : undefined
+  );
   const projectName = currentProject?.name || "项目详情";
 
   const navItems = id

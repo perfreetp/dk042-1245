@@ -42,14 +42,11 @@ const categoryColors: Record<DocumentCategory, string> = {
 
 export const Documents = () => {
   const { id } = useParams();
-  const {
-    getProjectDocuments,
-    addDocument,
-    updateDocument,
-    toggleDocumentMissing,
-  } = useProjectStore();
-
-  const documents = id ? getProjectDocuments(id) : [];
+  const allDocuments = useProjectStore((s) => s.documents);
+  const addDocument = useProjectStore((s) => s.addDocument);
+  const updateDocument = useProjectStore((s) => s.updateDocument);
+  const toggleDocumentMissing = useProjectStore((s) => s.toggleDocumentMissing);
+  const documents = id ? allDocuments.filter((d) => d.projectId === id) : [];
   const [activeCategory, setActiveCategory] = useState<DocumentCategory>("contract");
   const [editingComment, setEditingComment] = useState<string | null>(null);
   const [commentText, setCommentText] = useState("");

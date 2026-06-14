@@ -7,14 +7,17 @@ import { ArrowLeft, Bell, Search } from "lucide-react";
 export const AppLayout = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getCurrentProject, setCurrentProjectId } = useProjectStore();
-  const currentProject = getCurrentProject();
+  const setCurrentProjectId = useProjectStore((s) => s.setCurrentProjectId);
+  const currentProjectId = useProjectStore((s) => s.currentProjectId);
+  const currentProject = useProjectStore(
+    (s) => id ? s.projects.find((p) => p.id === id) : undefined
+  );
 
   useEffect(() => {
-    if (id) {
+    if (id && id !== currentProjectId) {
       setCurrentProjectId(id);
     }
-  }, [id, setCurrentProjectId]);
+  }, [id, currentProjectId, setCurrentProjectId]);
 
   return (
     <div className="flex h-screen bg-gray-50">

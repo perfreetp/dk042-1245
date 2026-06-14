@@ -35,21 +35,19 @@ import type { DocumentCategory } from "@/types";
 
 export const Submission = () => {
   const { id } = useParams();
-  const {
-    getCurrentProject,
-    getProjectDocuments,
-    getProjectCalculations,
-    getProjectMilestones,
-    getProjectTodos,
-    getProjectCommunications,
-  } = useProjectStore();
+  const projects = useProjectStore((s) => s.projects);
+  const allDocuments = useProjectStore((s) => s.documents);
+  const allCalculations = useProjectStore((s) => s.calculations);
+  const allMilestones = useProjectStore((s) => s.milestones);
+  const allTodos = useProjectStore((s) => s.todos);
+  const allCommunications = useProjectStore((s) => s.communications);
 
-  const project = getCurrentProject();
-  const documents = id ? getProjectDocuments(id) : [];
-  const calculations = id ? getProjectCalculations(id) : [];
-  const milestones = id ? getProjectMilestones(id) : [];
-  const todos = id ? getProjectTodos(id) : [];
-  const communications = id ? getProjectCommunications(id) : [];
+  const project = id ? projects.find((p) => p.id === id) : undefined;
+  const documents = id ? allDocuments.filter((d) => d.projectId === id) : [];
+  const calculations = id ? allCalculations.filter((c) => c.projectId === id) : [];
+  const milestones = id ? allMilestones.filter((m) => m.projectId === id) : [];
+  const todos = id ? allTodos.filter((t) => t.projectId === id) : [];
+  const communications = id ? allCommunications.filter((c) => c.projectId === id) : [];
 
   const [expandedCategories, setExpandedCategories] = useState<Set<DocumentCategory>>(
     new Set(["contract", "invoice", "monitoring", "photo"])

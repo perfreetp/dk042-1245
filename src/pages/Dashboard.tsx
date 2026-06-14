@@ -14,8 +14,7 @@ import { CreateProjectModal } from "@/components/CreateProjectModal";
 import { PROJECT_STATUS_LABELS } from "@/utils/constants";
 
 export const Dashboard = () => {
-  const { projects, documents, todos, getProjectDocuments, getProjectMilestones, getProjectTodos } =
-    useProjectStore();
+  const { projects, documents, todos, calculations } = useProjectStore();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,11 +25,11 @@ export const Dashboard = () => {
     const pendingDocs = documents.filter((d) => d.status === "pending" || d.isMissing).length;
     const pendingTodos = todos.filter((t) => !t.isCompleted).length;
     const totalReduction = projects.reduce((sum, p) => {
-      const calcs = useProjectStore.getState().getProjectCalculations(p.id);
+      const calcs = calculations.filter((c) => c.projectId === p.id);
       return sum + calcs.reduce((s, c) => s + c.reductionAmount, 0);
     }, 0);
     return { totalProjects, inProgress, pendingDocs, pendingTodos, totalReduction };
-  }, [projects, documents, todos, getProjectDocuments, getProjectMilestones, getProjectTodos]);
+  }, [projects, documents, todos, calculations]);
 
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {

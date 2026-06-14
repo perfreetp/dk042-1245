@@ -9,8 +9,9 @@ import type { ProjectStatus } from "@/types";
 
 export const ProjectDetail = () => {
   const { id } = useParams();
-  const project = useProjectStore((s) => s.getCurrentProject());
+  const allProjects = useProjectStore((s) => s.projects);
   const updateProject = useProjectStore((s) => s.updateProject);
+  const project = id ? allProjects.find((p) => p.id === id) : undefined;
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({

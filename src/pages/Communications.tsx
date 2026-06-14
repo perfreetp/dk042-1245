@@ -36,17 +36,14 @@ const typeColors: Record<CommunicationType, string> = {
 
 export const Communications = () => {
   const { id } = useParams();
-  const {
-    getProjectCommunications,
-    getProjectTodos,
-    addCommunication,
-    addTodo,
-    toggleTodo,
-    deleteTodo,
-  } = useProjectStore();
-
-  const communications = id ? getProjectCommunications(id) : [];
-  const todos = id ? getProjectTodos(id) : [];
+  const allCommunications = useProjectStore((s) => s.communications);
+  const allTodos = useProjectStore((s) => s.todos);
+  const addCommunication = useProjectStore((s) => s.addCommunication);
+  const addTodo = useProjectStore((s) => s.addTodo);
+  const toggleTodo = useProjectStore((s) => s.toggleTodo);
+  const deleteTodo = useProjectStore((s) => s.deleteTodo);
+  const communications = id ? allCommunications.filter((c) => c.projectId === id) : [];
+  const todos = id ? allTodos.filter((t) => t.projectId === id) : [];
 
   const [showCommForm, setShowCommForm] = useState(false);
   const [commType, setCommType] = useState<CommunicationType>("meeting");
